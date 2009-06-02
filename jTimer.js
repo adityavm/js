@@ -53,8 +53,7 @@
 					clearInterval(i, store);
 				}
 			} else
-				clearTimeout(i, store);
-					
+				clearTimeout(i, store);		
 		},
 		
 		clearInterval : function(i, store){
