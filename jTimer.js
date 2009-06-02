@@ -1,5 +1,5 @@
 /*
- * jTimer 0.1
+ * jTimer 0.2
  *
  * Copyright (c) 2009 Aditya Mukherjee (adityamukherjee.co)
  * Licensed under GPL (GPL-LICENSE.txt) licenses.
@@ -16,7 +16,11 @@
 	*		needs to be executed corresponding to the index that was
 	*		returned when setting the timer.
 	
+	* "clear()" clears timers based on the given index if it exists in
+	*		memory, regardless of it being an interval or timeout.
+	
 	* TODO: Also allow clearing timer by function name
+	* TODO: Make "clear()" work independently
 	*/
 	var Timer = function(){ }
 	Timer.prototype = {
@@ -33,6 +37,26 @@
 			return i;					
 		},
 		
+		setTimeout : function(fn, time){
+			var i = window.setTimeout(fn, time);
+			this.timeouts[i] = fn.toString();
+			return i;
+		},
+		
+		clear : function(i, store){//shortcut to clearing timers
+			store = (store == undefined) ? false : store;
+			//find what this timer actually was
+			if(timeouts[i] == undefined){
+				if(intervals[i] == undefined){
+					throw('Timer not found');
+				} else {
+					clearInterval(i, store);
+				}
+			} else
+				clearTimeout(i, store);
+					
+		},
+		
 		clearInterval : function(i, store){
 			store = (store == undefined) ? false : store;
 			window.clearInterval(i);
@@ -40,12 +64,6 @@
 				if(this.intervals[i] == true)
 					this.deleted['intervals'][i] = this.intervals[i];
 			delete this.intervals[i];
-		},
-		
-		setTimeout : function(fn, time){
-			var i = window.setTimeout(fn, time);
-			this.timeouts[i] = fn.toString();
-			return i;
 		},
 		
 		clearTimeout : function(i, store){
