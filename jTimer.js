@@ -46,8 +46,8 @@
 		clear : function(i, store){//shortcut to clearing timers
 			store = (store == undefined) ? false : store;
 			//find what this timer actually was
-			if(timeouts[i] == undefined){
-				if(intervals[i] == undefined){
+			if(this.timeouts[i] == undefined){
+				if(this.intervals[i] == undefined){
 					throw('Timer not found');
 				} else {
 					clearInterval(i, store);
